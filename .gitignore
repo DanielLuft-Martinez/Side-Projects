@@ -1,0 +1,4 @@
+
+
+# Ignore api .key. files
+*.key.*
