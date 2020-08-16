@@ -2,3 +2,6 @@
 
 # Ignore api .key. files
 *.key.*
+
+# Ignore img files
+*.png
