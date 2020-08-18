@@ -112,6 +112,9 @@ try:
 	aws_secret_access_key=AWS_SECRET_KEY
 	)
 
+	# aws bucket name
+	config.readline()
+	bucket = config.readline().rstrip()
 
 	# In[30]:
 
@@ -338,15 +341,15 @@ try:
 
 	s3 = session.resource('s3')
 	s3.meta.client.upload_file(f'{grouping}_data_imgs/boxplot-{str(today.date())}.png', 
-							   'daniel-one-bucket', 
+							   bucket, 
 							   f'{grouping}_data_imgs/boxplot-{str(today.date())}.png', 
 							   ExtraArgs={'ACL':'public-read'})
 	s3.meta.client.upload_file(f'{grouping}_data_imgs/lineplot-{str(today.date())}.png', 
-							   'daniel-one-bucket', 
+							   bucket, 
 							   f'{grouping}_data_imgs/lineplot-{str(today.date())}.png', 
 							   ExtraArgs={'ACL':'public-read'})
 	s3.meta.client.upload_file(f'{grouping}_data_imgs/histogram-{str(today.date())}.png', 
-							   'daniel-one-bucket', 
+							   bucket, 
 							   f'{grouping}_data_imgs/histogram-{str(today.date())}.png', 
 							   ExtraArgs={'ACL':'public-read'})
 
