@@ -91,6 +91,9 @@ try:
 	config.readline()
 	
 	# api keys
+	
+	# use iex cloud SANDBOX for testing iexcloud.sandbox.key.txt'
+	# use iex cloud for metered use iexcloud.key.txt'
 
 	# IEX
 	iex_api_key_file = config.readline().strip()
@@ -123,16 +126,7 @@ try:
 	# EDIT HERE
 	config.readline()
 	tickers = config.readline().strip().split(",")
-	"""
-	# not needed
-	tickers_names = [
-				'Lg Electronics Inc (LGLD.LN)',
-				'Zoom Video Communicaions (ZM)',
-				'Nvidia Corp (NVDA)',
-				'Adv Micro Device (AMD)',
-				'Intel Corp (INTC)',
-				'Seagate Tech Ord Shs (STX)']
-	"""
+
 	# MATCHING CONSTANTS
 	config.readline()
 	COMPANY_TYPES = config.readline().rstrip()
@@ -173,6 +167,12 @@ try:
 
 	# form http request
 	HTTP_req = f'https://cloud.iexapis.com/stable/stock/market/batch?symbols={tickers_string}&types={endpoints}&range={years}&token={IEX_API_KEY}'
+	
+	config.readline()
+	sandbox = config.readline().rstrip()
+	if(sandbox == "sandbox"):
+		# sandbox url for testing
+		HTTP_req = f'https://sandbox.iexapis.com/stable/stock/market/batch?symbols={tickers_string}&types={endpoints}&range={years}&token={IEX_API_KEY}'
 
 
 	# In[35]:
@@ -266,7 +266,7 @@ try:
 
 
 	if 'y' in years:
-		dates = [ x[5:-9]+'-'+x[2:4] for x in dates_full]
+		dates = [ str(x[5:-9]+'-'+x[2:4]).replace("-",'/') for x in dates_full]
 		range_points = []
 		month = ''
 		for i,d in enumerate(dates):
@@ -276,8 +276,16 @@ try:
 			if month != d[0:2]:
 				month = d[0:2]
 				range_points.append(i)
+		labels = True        
+		if len(range_points) > 12:
+	#         labels = False
+			less_points = []
+			for i,p in enumerate(range_points):
+				if i%(int(len(range_points)/12)) == 0:
+					less_points.append(p)
+			range_points = less_points[:]
 	else:
-		dates = [ x[5:-9]+'-'+x[2:4] for x in dates_full]
+		dates = [ str(x[5:-9]+'-'+x[2:4]).replace("-",'/') for x in dates_full]
 		range_points = [0]
 		mdec = len(dates)/10
 		for i,d in enumerate(dates):
